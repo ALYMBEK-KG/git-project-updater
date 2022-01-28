@@ -1,0 +1,52 @@
+{
+  "app": "git-project-updater",
+  "sleep": 60,
+  "repositories": {
+    "verif-server": {
+      "url": "git@github.com:PPKReo/verif-server.git",
+      "branch": "develop",
+      "commands": [
+        "bash ./mvnw clean package",
+        "rm /opt/tomcat/webapps/PpkVerificationServer.war",
+        "cp ./target/PpkVerificationServer.war /opt/tomcat/webapps",
+        {
+          "sleep": 30,
+          "repository": "verif-front"
+        }
+      ]
+    },
+    "verif-front": {
+      "url": "git@github.com:PPKReo/verif-front.git",
+      "branch": "develop",
+      "commands": [
+        "npm install",
+        "npm run build-test",
+        "rm -r /opt/tomcat/webapps/PpkVerificationServer/WEB-INF/classes/static/*",
+        "cp -r ./dist/* /opt/tomcat/webapps/PpkVerificationServer/WEB-INF/classes/static"
+      ]
+    },
+    "mno-back": {
+      "url": "git@github.com:PPKReo/mno-back.git",
+      "branch": "develop",
+      "commands": [
+        "bash ./mvnw clean package -D'spring-boot.run.profiles=dev'",
+        "rm /opt/tomcat/webapps/PpkMnoServer.war",
+        "cp ./target/PpkMnoServer.war /opt/tomcat/webapps",
+        {
+          "sleep": 30,
+          "repository": "mno-front2"
+        }
+      ]
+    },
+    "mno-front2": {
+      "url": "git@github.com:PPKReo/mno-front2.git",
+      "branch": "develop",
+      "commands": [
+        "npm install",
+        "npm run build-test",
+        "rm -r /opt/tomcat/webapps/PpkMnoServer/WEB-INF/classes/static/*",
+        "cp -r ./dist/* /opt/tomcat/webapps/PpkMnoServer/WEB-INF/classes/static"
+      ]
+    }
+  }
+}
