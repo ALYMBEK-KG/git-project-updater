@@ -42,7 +42,7 @@ class GitProjectUpdater:
       runCommands = True
 
     os.chdir(name)
-    subprocess.run(['git', 'checkout', '-f', repo['branch']])
+    if 'branch' in repo and repo['branch']: subprocess.run(['git', 'checkout', '-f', repo['branch']])
     pull = subprocess.run(['git', 'pull', '-f'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     pullStdout = pull.stdout.decode('utf-8') if pull else ''
 
